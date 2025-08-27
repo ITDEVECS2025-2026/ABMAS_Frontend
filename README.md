@@ -1,6 +1,7 @@
 # Welcome to ABMAS FRONTEND 👋
 
 ## Project Structure 📂 
+```bash
 app/
  ├── deviceOne/         # Page & layout for Device 1
  ├── deviceTwo/         # Page & layout for Device 2
@@ -20,8 +21,10 @@ lib/
  └── mqtt.ts            # MQTTService (connect, publish, subscribe, events)
 styles/
  └── global.css         # NativeWind + Gluestack global styles
+```bash
 
-## Tech Stack ⚡ 
+## Tech Stack ⚡
+
 React Native (Expo) → Base framework
 NativeWind → TailwindCSS for React Native
 Gluestack UI → Scalable UI components & design system
@@ -37,6 +40,7 @@ connect(brokerUrl: string, options?: object) → Connect to broker
 subscribe(topic: string) → Subscribe to topic
 publish(topic: string, message: string) → Publish message
 disconnect() → Disconnect client
+
 
 # Events
 connected → Triggered on successful connection
