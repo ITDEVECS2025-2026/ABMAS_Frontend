@@ -34,21 +34,22 @@ TypeScript → Strong typing & maintainability
 📍 MQTTService (lib/mqtt.ts)
 Helper class for managing MQTT connection via WebSocket.
 
-# Methods
-connect(brokerUrl: string, options?: object) → Connect to broker
-subscribe(topic: string) → Subscribe to topic
-publish(topic: string, message: string) → Publish message
-disconnect() → Disconnect client
+ # Methods
+ connect(brokerUrl: string, options?: object) → Connect to broker
+ subscribe(topic: string) → Subscribe to topic
+ publish(topic: string, message: string) → Publish message
+ disconnect() → Disconnect client
 
 
-# Events
-connected → Triggered on successful connection
-message → Triggered when receiving payload
-disconnected → Triggered on disconnect
-error → Triggered on error
+ # Events
+ connected → Triggered on successful connection
+ message → Triggered when receiving payload
+ disconnected → Triggered on disconnect
+ error → Triggered on error
 
-# Example Usage
-import MQTTService from "@/lib/mqtt";
+ # Example Usage
+```bash
+ import MQTTService from "@/lib/mqtt";
 
 useEffect(() => {
   MQTTService.connect("wss://broker.emqx.io:8084/mqtt")
@@ -60,6 +61,7 @@ useEffect(() => {
 
   return () => MQTTService.disconnect();
 }, []);
+```
 
 ## UI Components 🖼️
 📍 Form Components (components/form)
@@ -87,7 +89,6 @@ deviceOne/index.tsx … deviceFive/index.tsx
 Each page displays sensor data detail for corresponding device
 
 ## Get started
-
 1. Install dependencies
 
    ```bash
