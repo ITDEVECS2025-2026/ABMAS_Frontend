@@ -21,14 +21,14 @@ lib/
  └── mqtt.ts            # MQTTService (connect, publish, subscribe, events)
 styles/
  └── global.css         # NativeWind + Gluestack global styles
- ```bash
+ ```
 
 ## Tech Stack ⚡
-React Native (Expo) → Base framework
-NativeWind → TailwindCSS for React Native
-Gluestack UI → Scalable UI components & design system
-MQTT.js → Realtime IoT communication
-TypeScript → Strong typing & maintainability
+-  React Native (Expo) → Base framework
+-  NativeWind → TailwindCSS for React Native
+-  Gluestack UI → Scalable UI components & design system
+-  MQTT.js → Realtime IoT communication
+-  TypeScript → Strong typing & maintainability
 
 ## MQTT Integration 📡 
 📍 MQTTService (lib/mqtt.ts)
@@ -57,7 +57,8 @@ useEffect(() => {
 
   MQTTService.on("message", (topic, msg) => {
     console.log("Message:", topic, msg);
-  });
+  })
+;
 
   return () => MQTTService.disconnect();
 }, []);
