@@ -1,29 +1,34 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
+import React from "react";
+import { Stack } from "expo-router";
+import "../styles/global.css";
+import { useFonts, Montserrat_400Regular, Montserrat_500Medium, Montserrat_700Bold } from "@expo-google-fonts/montserrat";
+import { View } from "react-native";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Montserrat_400Regular,
+    Montserrat_500Medium,
+    Montserrat_700Bold,
   });
 
   if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
+    return (
+      <View>
+        <Spinner color={"blue"} focusable />
+      </View>
+    );
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" />
+      <Stack.Screen name="+not-found" />
+      <Stack.Screen name="(deviceOne)" />
+      <Stack.Screen name="(deviceTwo)" />
+      <Stack.Screen name="(deviceThree)" />
+      <Stack.Screen name="(deviceFour)" />
+      <Stack.Screen name="(deviceFive)" />
+    </Stack>
   );
 }
