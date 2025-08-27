@@ -1,6 +1,6 @@
 # Welcome to ABMAS FRONTEND 👋
 
-## Project Structure 📂 
+# Project Structure 📂 
  ```bash
 app/
  ├── deviceOne/         # Page & layout for Device 1
@@ -23,48 +23,48 @@ styles/
  └── global.css         # NativeWind + Gluestack global styles
  ```
 
-## Tech Stack ⚡
+# Tech Stack ⚡
 -  React Native (Expo) → Base framework
 -  NativeWind → TailwindCSS for React Native
 -  Gluestack UI → Scalable UI components & design system
 -  MQTT.js → Realtime IoT communication
 -  TypeScript → Strong typing & maintainability
 
-## MQTT Integration 📡 
+# MQTT Integration 📡 
 📍 MQTTService (lib/mqtt.ts)
 Helper class for managing MQTT connection via WebSocket.
 
- # Methods
+ ## Methods
  connect(brokerUrl: string, options?: object) → Connect to broker
  subscribe(topic: string) → Subscribe to topic
  publish(topic: string, message: string) → Publish message
  disconnect() → Disconnect client
 
 
- # Events
+ ## Events
  connected → Triggered on successful connection
  message → Triggered when receiving payload
  disconnected → Triggered on disconnect
  error → Triggered on error
 
- # Example Usage
-```bash
+ ## Example Usage
+ ```bash
  import MQTTService from "@/lib/mqtt";
 
-useEffect(() => {
-  MQTTService.connect("wss://broker.emqx.io:8084/mqtt")
+ useEffect(() => {
+   MQTTService.connect("wss://broker.emqx.io:8084/mqtt")
     .then(() => MQTTService.subscribe("farm/device1/temp"));
 
-  MQTTService.on("message", (topic, msg) => {
-    console.log("Message:", topic, msg);
-  })
-;
+   MQTTService.on("message", (topic, msg) => {
+     console.log("Message:", topic, msg);
+   })
+ ;
 
-  return () => MQTTService.disconnect();
-}, []);
-```
+   return () => MQTTService.disconnect();
+ }, []);
+ ```
 
-## UI Components 🖼️
+# UI Components 🖼️
 📍 Form Components (components/form)
 Form.tsx → Wrapper untuk form handling
 FormField.tsx → Input field
@@ -79,7 +79,7 @@ vstack/ → Vertical stack layout
 gluestack-ui-provider/ → Theme provider
  fyi : you can add another Component using command :
        - npx gluestack-ui add <Components>
-## Pages 🏠
+# Pages 🏠
 📍 Home.tsx
 Shows MQTT status (Online / Offline)
 Displays charts (soil moisture, pH, temperature, etc.)
@@ -89,7 +89,7 @@ Displays charts (soil moisture, pH, temperature, etc.)
 deviceOne/index.tsx … deviceFive/index.tsx
 Each page displays sensor data detail for corresponding device
 
-## Get started
+# Get started
 1. Install dependencies
 
    ```bash
@@ -110,5 +110,5 @@ Each page displays sensor data detail for corresponding device
    eas build -p android --profile preview
     ```
 
-## Author 👨‍💻
+# Author 👨‍💻
 Built with ❤️ by Jordan Arya Leksana (ITS)
