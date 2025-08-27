@@ -1,7 +1,7 @@
 # Welcome to ABMAS FRONTEND 👋
 
 ## Project Structure 📂 
-```bash
+ ```bash
 app/
  ├── deviceOne/         # Page & layout for Device 1
  ├── deviceTwo/         # Page & layout for Device 2
@@ -21,10 +21,9 @@ lib/
  └── mqtt.ts            # MQTTService (connect, publish, subscribe, events)
 styles/
  └── global.css         # NativeWind + Gluestack global styles
-```bash
+ ```bash
 
 ## Tech Stack ⚡
-
 React Native (Expo) → Base framework
 NativeWind → TailwindCSS for React Native
 Gluestack UI → Scalable UI components & design system
