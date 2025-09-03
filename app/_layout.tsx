@@ -21,7 +21,12 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        
+      }}
+    >
       <Stack.Screen name="Home" />
       <Stack.Screen name="+not-found" />
       <Stack.Screen name="(deviceOne)" />
