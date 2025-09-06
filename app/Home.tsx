@@ -13,6 +13,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MqttProps, ReceivedMessage } from "@/interfaces/IMqtt";
 import { useNormalizedURL } from "@/utils/useURLConvertion";
+import { useMqqtMessageAtom } from "@/store/atom";
 
 
 const validationSchema = z.object({
@@ -25,9 +26,6 @@ const validationSchema = z.object({
         ),
     topic: z.string().min(1, "Topic tidak boleh kosong"),
 });
-
-
-
 
 export default function Home() {
     const router = useRouter();
@@ -103,7 +101,23 @@ export default function Home() {
             mqtt.removeAllListeners("unsubscribed");
         };
     }, []);
+    const onMessage = (data: {message: string, topic: string}) => {
+        let parsedMessage;
+        try {
+            parsedMessage = JSON.parse(data.message);
+        } catch (e) {
+            parsedMessage = { raw: data.message };
+        }
 
+        const newMessage: ReceivedMessage ={
+            topic: data.topic,
+            message: data.message,
+            parsedMessage: parsedMessage,
+            timestamp: new Date(),
+        }
+
+        useMqqtMessageAtom((prev: ReceivedMessage[]) => [newMessage, ...prev].slice(0, 50));
+    }
     const handleConnect = (data: MqttProps) => {
         if (!isConnected) {
             setConnectionStatus("Connecting...");

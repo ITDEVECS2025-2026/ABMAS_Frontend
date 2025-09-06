@@ -6,5 +6,6 @@ export type MqttProps = {
 export interface ReceivedMessage {
   topic: string;
   message: string;
+  parsedMessage?: any; 
   timestamp: Date;
 }
