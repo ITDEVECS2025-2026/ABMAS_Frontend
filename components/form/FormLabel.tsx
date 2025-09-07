@@ -3,9 +3,9 @@ import { Text } from "../ui/text"
 import React from "react"
 
 
-export function FormLabel({children}: FormLabelProps){
+export function FormLabel({children, className, style}: FormLabelProps){
     return (
-        <Text size="sm" bold>
+        <Text size="sm" style={style} className={className} bold>
             {children}
         </Text>
     )

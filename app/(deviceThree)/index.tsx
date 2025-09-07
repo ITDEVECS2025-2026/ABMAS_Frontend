@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 
 
 
-export default function FifthDeviceScreen() {
+export default function ThirdDeviceScreen() {
   return (
     <View>
         <Text>Third Device Screen</Text>
