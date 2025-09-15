@@ -18,7 +18,8 @@ const CIRCUMFERENCE = RADIUS * Math.PI;
 
 export function GaugeCard({ label, value, unit, progress, icon }: Props) {
   const strokeDashoffset = CIRCUMFERENCE - CIRCUMFERENCE * progress;
-
+  console.log(strokeDashoffset)
+  console.log(progress)
   return (
     <View style={styles.card}>
       <View style={styles.gaugeContainer}>

@@ -17,14 +17,17 @@ const calculateProgress = (value: number, min: number, max: number) => {
 
 export default function DeviceOneScreen() { 
   const messages = useAtomValue(mqqtMessageAtom);
-  const latestMessage = messages[0]?.parsedMessage || {};
-  
+  // console.log('All Messages:', messages);
+  const latestMessage = JSON.parse(messages[0]?.message || '{}') || {};
+  // console.log('Latest Message:', latestMessage);
+
+  console.log(typeof latestMessage.N)
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       {/* Header Utama */}
       <View style={styles.header}>
         {/* JUDUL DAN IKON DIUBAH */}
-        <Text style={styles.title}>🍃 Device 4 Monitor</Text> 
+        <Text style={styles.title}>🍃 Device 1 Monitor</Text> 
         <Text style={styles.subtitle}>Real-time Soil & Enviromental Data</Text>
         <Text style={styles.updateText}>
           Last Update: {messages[0]?.timestamp ? new Date(messages[0].timestamp).toLocaleTimeString() : 'No data'}
@@ -60,17 +63,17 @@ export default function DeviceOneScreen() {
         <ParameterCard label="Potassium" value={Number(latestMessage.K || 0).toFixed(1)} unit="mg/kg" icon={<Text style={styles.iconText}>K</Text>} />
       </View>
        <View style={styles.cardRow}>
-        <ParameterCard label="Conductivity" value={Number(latestMessage.conductivity || 0).toFixed(1)} unit="μs/cm" icon={<Text style={styles.iconEmoji}>⚡️</Text>} />
+        <ParameterCard label="Conductivity" value={Number(latestMessage.EC || 0).toFixed(1)} unit="μs/cm" icon={<Text style={styles.iconEmoji}>⚡️</Text>} />
         <ParameterCard label="Power of Hydrogen" value={Number(latestMessage.pH || 0).toFixed(1)} unit="pH" icon={<Text style={styles.iconEmoji}>🧪</Text>} />
       </View>
 
       {/* 3. Section Environment Statistics */}
       <Text style={styles.sectionTitle}>🏡 Environment Statistics</Text>
       <View style={styles.cardRowWrap}>
-        <GaugeCard label="Temperature" value={Number(latestMessage.temp || 0).toFixed(1)} unit="°C" progress={calculateProgress(latestMessage.temp || 0, 0, 50)} icon={<Text style={styles.iconEmoji}>🌡️</Text>} />
-        <GaugeCard label="Humidity" value={Number(latestMessage.humidity || 0).toFixed(1)} unit="%" progress={calculateProgress(latestMessage.humidity || 0, 0, 100)} icon={<Text style={styles.iconEmoji}>💧</Text>} />
-        <GaugeCard label="Light Intensity" value={Number(latestMessage.light || 0).toFixed(0)} unit="lux" progress={calculateProgress(latestMessage.light || 0, 0, 2000)} icon={<Text style={styles.iconEmoji}>☀️</Text>} />
-        <GaugeCard label="Pressure" value={Number(latestMessage.pressure || 0).toFixed(1)} unit="hPa" progress={calculateProgress(latestMessage.pressure || 0, 900, 1100)} icon={<Text style={styles.iconEmoji}>📊</Text>} />
+        <GaugeCard label="Temperature" value={Number(latestMessage.TempOut || 0).toFixed(1)} unit="°C" progress={calculateProgress(latestMessage.TempOut || 0, 0, 50)} icon={<Text style={styles.iconEmoji}>🌡️</Text>} />
+        <GaugeCard label="Humidity" value={Number(latestMessage.HumOut || 0).toFixed(1)} unit="%" progress={calculateProgress(latestMessage.HumOut || 0, 0, 100)} icon={<Text style={styles.iconEmoji}>💧</Text>} />
+        <GaugeCard label="Light Intensity" value={Number(latestMessage.Lux || 0).toFixed(0)} unit="lux" progress={calculateProgress(latestMessage.Lux|| 0, 0, 2000)} icon={<Text style={styles.iconEmoji}>☀️</Text>} />
+        <GaugeCard label="Pressure" value={Number(latestMessage.PresOut || 0).toFixed(1)} unit="hPa" progress={calculateProgress(latestMessage.PresOut || 0, 900, 1100)} icon={<Text style={styles.iconEmoji}>📊</Text>} />
       </View>
 
     </ScrollView>

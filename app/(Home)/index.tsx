@@ -12,9 +12,10 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MqttProps, ReceivedMessage } from "@/interfaces/IMqtt";
 import { useNormalizedURL } from "@/utils/useURLConvertion";
-import { useMqqtMessageAtom } from "@/store/atom";
+import { mqqtMessageAtom, useMqqtMessageAtom } from "@/store/atom";
 import { VStack } from "@/components/ui/vstack";
-
+import { useAtom, useSetAtom } from "jotai";
+import parsedPayload from "@/utils/parsedPayload"
 const validationSchema = z.object({
     brokerUrl: z
         .string()
@@ -30,14 +31,15 @@ export default function Index() {
     const router = useRouter();
     const [isConnected, setIsConnected] = useState(false);
     const [connectionStatus, setConnectionStatus] = useState("Disconnected");
-    const [receivedMessages, setReceivedMessages] = useState<ReceivedMessage[]>([]);
+    const [receivedMessages, setReceivedMessages] = useAtom(mqqtMessageAtom);
     const [subscribedTopics, setSubscribedTopics] = useState<string[]>([]);
+    const payloadSender = useSetAtom(mqqtMessageAtom);
 
     const methods = useForm<MqttProps>({
         resolver: zodResolver(validationSchema),
         defaultValues: {
             brokerUrl: "mqtt://broker.emqx.io:1883",
-            topic: "/ecs/abmas/0/data",
+            topic: "abmasecs/data",
         },
         mode: "onTouched",
         reValidateMode: "onChange",
@@ -63,13 +65,16 @@ export default function Index() {
         };
 
         const onMessage = (data: { topic: string; message: string }) => {
+            const parsedData = parsedPayload(data.message);
             console.log("Message received:", data.topic, data.message);
+            console.log("Parsed message:", parsedData);
             const newMessage: ReceivedMessage = {
                 topic: data.topic,
-                message: data.message,
+                message: typeof parsedData === "string" ? parsedData : JSON.stringify(parsedData),
                 timestamp: new Date(),
             };
             setReceivedMessages(prev => [newMessage, ...prev].slice(0, 50));
+            payloadSender(prev => [newMessage, ...prev].slice(0, 50));
         };
 
         const onSubscribed = (topic: string) => {
@@ -99,23 +104,21 @@ export default function Index() {
         };
     }, []);
 
-    const onMessage = (data: { message: string, topic: string }) => {
-        let parsedMessage;
-        try {
-            parsedMessage = JSON.parse(data.message);
-        } catch (e) {
-            parsedMessage = { raw: data.message };
-        }
+    // const onMessage = (data: { message: string, topic: string }) => {
+    //     const parsedData = parsedPayload(data.message);
 
-        const newMessage: ReceivedMessage = {
-            topic: data.topic,
-            message: data.message,
-            parsedMessage: parsedMessage,
-            timestamp: new Date(),
-        }
+    //     console.log("Received message on topic:", data.topic, data.message);
+    //    
 
-        useMqqtMessageAtom((prev: ReceivedMessage[]) => [newMessage, ...prev].slice(0, 50));
-    }
+    //     const newMessage: ReceivedMessage = {
+    //         topic: data.topic,
+    //         message: data.message,
+    //         timestamp: new Date(),
+    //         parsedMessage: parsedData,
+    //     };
+
+    //     console.log("Updated messages in atom:", newMessage);
+    // }
 
     const handleConnect = (data: MqttProps) => {
         if (!isConnected) {
@@ -144,11 +147,11 @@ export default function Index() {
                         message: `Gagal terhubung: ${err.message}`,
                     });
                 });
-        } else {
-            mqtt.disconnect();
-            setIsConnected(false);
+            } else {
+                setReceivedMessages([]);
+                mqtt.disconnect();
+                setIsConnected(false);
             setConnectionStatus("Disconnected");
-            setReceivedMessages([]);
             console.log("Disconnected from MQTT broker");
         }
     };
@@ -180,26 +183,26 @@ export default function Index() {
                         <View style={[
                             styles.statusDot,
                             {
-                                backgroundColor: isConnected 
-                                    ? '#10b981' 
-                                    : connectionStatus.includes('Error') 
-                                    ? '#ef4444' 
-                                    : '#f59e0b'
+                                backgroundColor: isConnected
+                                    ? '#10b981'
+                                    : connectionStatus.includes('Error')
+                                        ? '#ef4444'
+                                        : '#f59e0b'
                             }
                         ]} />
                         <Text style={[
                             styles.statusText,
                             {
-                                backgroundColor: isConnected 
-                                    ? '#dcfce7' 
-                                    : connectionStatus.includes('Error') 
-                                    ? '#fee2e2' 
-                                    : '#fef3c7',
-                                color: isConnected 
-                                    ? '#166534' 
-                                    : connectionStatus.includes('Error') 
-                                    ? '#991b1b' 
-                                    : '#92400e'
+                                backgroundColor: isConnected
+                                    ? '#dcfce7'
+                                    : connectionStatus.includes('Error')
+                                        ? '#fee2e2'
+                                        : '#fef3c7',
+                                color: isConnected
+                                    ? '#166534'
+                                    : connectionStatus.includes('Error')
+                                        ? '#991b1b'
+                                        : '#92400e'
                             }
                         ]}>
                             {connectionStatus}
@@ -285,15 +288,15 @@ export default function Index() {
                     ))}
 
                     <View style={styles.buttonRow}>
-                        <Button 
-                            onPress={handlePublish} 
+                        <Button
+                            onPress={handlePublish}
                             style={[styles.controlButton, { backgroundColor: '#8b5cf6' }]}
                         >
                             <ButtonText style={styles.controlButtonText}>📤 Test Publish</ButtonText>
                         </Button>
 
-                        <Button 
-                            onPress={clearMessages} 
+                        <Button
+                            onPress={clearMessages}
                             style={[styles.controlButton, { backgroundColor: '#f97316' }]}
                         >
                             <ButtonText style={styles.controlButtonText}>🗑️ Clear</ButtonText>
@@ -333,8 +336,8 @@ export default function Index() {
             {/* Device Navigation Grid */}
             <VStack style={styles.deviceGrid}>
                 <View style={styles.deviceRow}>
-                    <Button 
-                        disabled={!isConnected} 
+                    <Button
+                        disabled={!isConnected}
                         onPress={() => router.push("/(deviceOne)")}
                         style={[
                             styles.deviceButton,
@@ -348,9 +351,9 @@ export default function Index() {
                             🌾 Device 1
                         </ButtonText>
                     </Button>
-                    
-                    <Button 
-                        disabled={!isConnected} 
+
+                    <Button
+                        disabled={!isConnected}
                         onPress={() => router.push("/(deviceTwo)")}
                         style={[
                             styles.deviceButton,
@@ -365,10 +368,10 @@ export default function Index() {
                         </ButtonText>
                     </Button>
                 </View>
-                
+
                 <View style={styles.deviceRow}>
-                    <Button 
-                        disabled={!isConnected} 
+                    <Button
+                        disabled={!isConnected}
                         onPress={() => router.push("/(deviceThree)")}
                         style={[
                             styles.deviceButton,
@@ -382,9 +385,9 @@ export default function Index() {
                             🌱 Device 3
                         </ButtonText>
                     </Button>
-                    
-                    <Button 
-                        disabled={!isConnected} 
+
+                    <Button
+                        disabled={!isConnected}
                         onPress={() => router.push("/(deviceFour)")}
                         style={[
                             styles.deviceButton,
@@ -399,10 +402,10 @@ export default function Index() {
                         </ButtonText>
                     </Button>
                 </View>
-                
+
                 <View style={styles.deviceRowCenter}>
-                    <Button 
-                        disabled={!isConnected} 
+                    <Button
+                        disabled={!isConnected}
                         onPress={() => router.push("/(deviceFive)")}
                         style={[
                             styles.deviceButtonSingle,
@@ -555,7 +558,7 @@ const styles = StyleSheet.create({
     },
     connectButton: {
         width: '100%',
-     
+
         borderRadius: 12,
         marginTop: 8,
         shadowColor: '#000',
@@ -612,7 +615,7 @@ const styles = StyleSheet.create({
     },
     controlButtonText: {
         color: '#ffffff',
-         fontWeight: '600',
+        fontWeight: '600',
         textAlign: 'center',
     },
     messagesSection: {
@@ -711,8 +714,8 @@ const styles = StyleSheet.create({
     },
     deviceButton: {
         flex: 1,
-        
-        
+
+
         borderRadius: 16,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
@@ -734,7 +737,7 @@ const styles = StyleSheet.create({
     deviceButtonText: {
         fontWeight: 'bold',
         textAlign: 'center',
-        
+
         fontSize: 16,
     },
     backgroundCircle1: {
