@@ -27,16 +27,16 @@ export default function DeviceOneScreen() {
       {/* Header Utama */}
       <View style={styles.header}>
         {/* JUDUL DAN IKON DIUBAH */}
-        <Text style={styles.title}>🍃 Device 1 Monitor</Text> 
-        <Text style={styles.subtitle}>Real-time Soil & Enviromental Data</Text>
+        <Text style={styles.title}>🍃 Sensor 1</Text> 
+        <Text style={styles.subtitle}>Data Tanah & Lingkungan Secara Langsung</Text>
         <Text style={styles.updateText}>
-          Last Update: {messages[0]?.timestamp ? new Date(messages[0].timestamp).toLocaleTimeString() : 'No data'}
+          Pembaruan terakhir: {messages[0]?.timestamp ? new Date(messages[0].timestamp).toLocaleTimeString() : 'No data'}
         </Text>
       </View>
 
       <View style={styles.statusCard}>
       <View style={styles.statusRow}>
-        <Text style={styles.statusLabel}>Data Status</Text>
+        <Text style={styles.statusLabel}>Status</Text>
         <View style={styles.statusIndicatorRow}>
           <View style={[
             styles.statusDot,
@@ -49,31 +49,31 @@ export default function DeviceOneScreen() {
               color: messages[0] ? '#166534' : '#991b1b'
             }
           ]}>
-            {messages[0] ? 'Active' : 'No Data'}
+            {messages[0] ? 'Terhubung 😀' : 'Terputus ☠️'}
           </Text>
         </View>
       </View>
     </View>
 
       {/* 2. Section Soil Parameters */}
-      <Text style={styles.sectionTitle}>🌱 Soil Parameters</Text>
+      <Text style={styles.sectionTitle}>🌱 Kondisi Tanah</Text>
       <View style={styles.cardRow}>
         <ParameterCard label="Nitrogen" value={Number(latestMessage.N || 0).toFixed(1)} unit="mg/kg" icon={<Text style={styles.iconText}>N</Text>} />
-        <ParameterCard label="Phosphorus" value={Number(latestMessage.P || 0).toFixed(1)} unit="mg/kg" icon={<Text style={styles.iconText}>P</Text>} />
-        <ParameterCard label="Potassium" value={Number(latestMessage.K || 0).toFixed(1)} unit="mg/kg" icon={<Text style={styles.iconText}>K</Text>} />
+        <ParameterCard label="Fosfor" value={Number(latestMessage.P || 0).toFixed(1)} unit="mg/kg" icon={<Text style={styles.iconText}>P</Text>} />
+        <ParameterCard label="Kalium" value={Number(latestMessage.K || 0).toFixed(1)} unit="mg/kg" icon={<Text style={styles.iconText}>K</Text>} />
       </View>
        <View style={styles.cardRow}>
-        <ParameterCard label="Conductivity" value={Number(latestMessage.EC || 0).toFixed(1)} unit="μs/cm" icon={<Text style={styles.iconEmoji}>⚡️</Text>} />
-        <ParameterCard label="Power of Hydrogen" value={Number(latestMessage.pH || 0).toFixed(1)} unit="pH" icon={<Text style={styles.iconEmoji}>🧪</Text>} />
+        <ParameterCard label="Konduktivitas" value={Number(latestMessage.EC || 0).toFixed(1)} unit="μs/cm" icon={<Text style={styles.iconEmoji}>⚡️</Text>} />
+        <ParameterCard label="Tingkat Keasaman" value={Number(latestMessage.pH || 0).toFixed(1)} unit="pH" icon={<Text style={styles.iconEmoji}>🧪</Text>} />
       </View>
 
       {/* 3. Section Environment Statistics */}
-      <Text style={styles.sectionTitle}>🏡 Environment Statistics</Text>
+      <Text style={styles.sectionTitle}>🏡 Kondisi Lingkungan</Text>
       <View style={styles.cardRowWrap}>
-        <GaugeCard label="Temperature" value={Number(latestMessage.TempOut || 0).toFixed(1)} unit="°C" progress={calculateProgress(latestMessage.TempOut || 0, 0, 50)} icon={<Text style={styles.iconEmoji}>🌡️</Text>} />
-        <GaugeCard label="Humidity" value={Number(latestMessage.HumOut || 0).toFixed(1)} unit="%" progress={calculateProgress(latestMessage.HumOut || 0, 0, 100)} icon={<Text style={styles.iconEmoji}>💧</Text>} />
-        <GaugeCard label="Light Intensity" value={Number(latestMessage.Lux || 0).toFixed(0)} unit="lux" progress={calculateProgress(latestMessage.Lux|| 0, 0, 2000)} icon={<Text style={styles.iconEmoji}>☀️</Text>} />
-        <GaugeCard label="Pressure" value={Number(latestMessage.PresOut || 0).toFixed(1)} unit="hPa" progress={calculateProgress(latestMessage.PresOut || 0, 900, 1100)} icon={<Text style={styles.iconEmoji}>📊</Text>} />
+        <GaugeCard label="Suhu" value={Number(latestMessage.TempOut || 0).toFixed(1)} unit="°C" progress={calculateProgress(latestMessage.TempOut || 0, 0, 50)} icon={<Text style={styles.iconEmoji}>🌡️</Text>} />
+        <GaugeCard label="Kelembaban" value={Number(latestMessage.HumOut || 0).toFixed(1)} unit="%" progress={calculateProgress(latestMessage.HumOut || 0, 0, 100)} icon={<Text style={styles.iconEmoji}>💧</Text>} />
+        <GaugeCard label="Intensitas Cahaya" value={Number(latestMessage.Lux || 0).toFixed(0)} unit="lux" progress={calculateProgress(latestMessage.Lux|| 0, 0, 2000)} icon={<Text style={styles.iconEmoji}>☀️</Text>} />
+        <GaugeCard label="Tekanan" value={Number(latestMessage.PresOut || 0).toFixed(1)} unit="hPa" progress={calculateProgress(latestMessage.PresOut || 0, 900, 1100)} icon={<Text style={styles.iconEmoji}>📊</Text>} />
       </View>
 
     </ScrollView>

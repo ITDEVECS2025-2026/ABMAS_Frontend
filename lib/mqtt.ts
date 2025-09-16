@@ -45,6 +45,7 @@ class MQTTServiceImpl extends EventEmitter implements MQTTService {
           reconnectPeriod: 0, // Nonaktifkan reconnect otomatis
           connectTimeout: 10000, // Timeout koneksi 10 detik
           clean: true,
+          keepalive: 10000,
         });
 
         this.client.on("connect", () => {

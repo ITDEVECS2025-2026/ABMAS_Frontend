@@ -4,7 +4,7 @@ import "../styles/global.css";
 import { useFonts, Montserrat_400Regular, Montserrat_500Medium, Montserrat_700Bold } from "@expo-google-fonts/montserrat";
 import { View } from "react-native";
 import { Spinner } from "@/components/ui/spinner";
-import { SafeAreaView } from "react-native-safe-area-context";
+
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -21,11 +21,12 @@ export default function RootLayout() {
     );
   }
 
+
   return (
     <Stack
       screenOptions={{
         headerShown: false,
-
+ 
       }}
     >
       <Stack.Screen name="(Home)/index" />

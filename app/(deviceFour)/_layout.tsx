@@ -4,13 +4,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Layout() {
   return (
-    <Stack>
+    <SafeAreaView>
       <Stack.Screen 
-        name="index"
+        name="DeviceFour"
         options={{ 
           title: 'Device Four' 
+          
         }} 
       />
-    </Stack>
+    </SafeAreaView>
   );
 }

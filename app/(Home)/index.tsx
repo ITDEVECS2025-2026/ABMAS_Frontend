@@ -122,7 +122,7 @@ export default function Index() {
 
     const handleConnect = (data: MqttProps) => {
         if (!isConnected) {
-            setConnectionStatus("Connecting...");
+            setConnectionStatus("menghubungkan...");
 
             const brokerUrl = useNormalizedURL(data.brokerUrl);
 
@@ -134,13 +134,13 @@ export default function Index() {
             })
                 .then(() => {
                     setIsConnected(true);
-                    setConnectionStatus("Connected");
+                    setConnectionStatus("terhubung");
                     mqtt.subscribe(data.topic);
                 })
                 .catch((err: Error) => {
-                    console.log("Failed to connect to MQTT broker", err);
+                    console.log("Gagal terhubung ke broker MQTT", err);
                     setIsConnected(false);
-                    setConnectionStatus(`Connection Failed: ${err.message}`);
+                    setConnectionStatus(`Koneksi Gagal: ${err.message}`);
 
                     methods.setError("brokerUrl", {
                         type: "manual",
@@ -151,8 +151,8 @@ export default function Index() {
                 setReceivedMessages([]);
                 mqtt.disconnect();
                 setIsConnected(false);
-            setConnectionStatus("Disconnected");
-            console.log("Disconnected from MQTT broker");
+                setConnectionStatus("Terputus");
+                console.log("Terputus dari broker MQTT");
         }
     };
 
@@ -171,14 +171,14 @@ export default function Index() {
             {/* Header Section */}
             <View style={styles.header}>
                 <View style={styles.decorativeCircle} />
-                <Text style={styles.headerTitle}>🌱 Soil Monitor</Text>
-                <Text style={styles.headerSubtitle}>Advanced Agricultural Monitoring System</Text>
+                <Text style={styles.headerTitle}>🌱 Monitor Tanah</Text>
+                <Text style={styles.headerSubtitle}>Sistem Pemantauan Pertanian Lanjutan</Text>
             </View>
 
             {/* Status Indicator */}
             <View style={styles.statusCard}>
                 <View style={styles.statusRow}>
-                    <Text style={styles.statusLabel}>Connection Status</Text>
+                    <Text style={styles.statusLabel}>Status</Text>
                     <View style={styles.statusIndicatorRow}>
                         <View style={[
                             styles.statusDot,
@@ -213,7 +213,7 @@ export default function Index() {
 
             {/* Connection Form */}
             <View style={styles.formCard}>
-                <Text style={styles.formTitle}>🔗 Connection Setup</Text>
+                <Text style={styles.formTitle}>🔗 Pengaturan Koneksi</Text>
                 <Form<MqttProps> methods={methods}>
                     <View style={styles.inputGroup}>
                         <FormLabel style={styles.inputLabel}>Broker URL</FormLabel>
@@ -271,7 +271,7 @@ export default function Index() {
                         disabled={methods.formState.isSubmitting}
                     >
                         <ButtonText style={styles.connectButtonText}>
-                            {methods.formState.isSubmitting ? "🔄 Connecting..." : isConnected ? "🔌 Disconnect" : "⚡ Connect"}
+                            {methods.formState.isSubmitting ? "🔄 Menghubungkan..." : isConnected ? "🔌 terputus" : "⚡ terhubung"}
                         </ButtonText>
                     </Button>
                 </Form>
@@ -292,14 +292,14 @@ export default function Index() {
                             onPress={handlePublish}
                             style={[styles.controlButton, { backgroundColor: '#8b5cf6' }]}
                         >
-                            <ButtonText style={styles.controlButtonText}>📤 Test Publish</ButtonText>
+                            <ButtonText style={styles.controlButtonText}>📤 Test Koneksi</ButtonText>
                         </Button>
 
                         <Button
                             onPress={clearMessages}
                             style={[styles.controlButton, { backgroundColor: '#f97316' }]}
                         >
-                            <ButtonText style={styles.controlButtonText}>🗑️ Clear</ButtonText>
+                            <ButtonText style={styles.controlButtonText}>🗑️ Bersihkan</ButtonText>
                         </Button>
                     </View>
                 </View>
@@ -313,8 +313,8 @@ export default function Index() {
                         {receivedMessages.length === 0 ? (
                             <View style={styles.noMessagesContainer}>
                                 <Text style={styles.noMessagesIcon}>📡</Text>
-                                <Text style={styles.noMessagesText}>Waiting for messages...</Text>
-                                <Text style={styles.noMessagesSubtext}>Connect to start receiving data</Text>
+                                <Text style={styles.noMessagesText}>menunggu pesan masuk...</Text>
+                                <Text style={styles.noMessagesSubtext}>Hubungkan untuk mulai menerima data</Text>
                             </View>
                         ) : (
                             receivedMessages.map((msg, index) => (
@@ -348,7 +348,7 @@ export default function Index() {
                             styles.deviceButtonText,
                             { color: isConnected ? '#ffffff' : '#6b7280' }
                         ]}>
-                            🌾 Device 1
+                            🌾 Sensor 1
                         </ButtonText>
                     </Button>
 
@@ -364,7 +364,7 @@ export default function Index() {
                             styles.deviceButtonText,
                             { color: isConnected ? '#ffffff' : '#6b7280' }
                         ]}>
-                            🌿 Device 2
+                            🌿 Sensor 2
                         </ButtonText>
                     </Button>
                 </View>
@@ -382,7 +382,7 @@ export default function Index() {
                             styles.deviceButtonText,
                             { color: isConnected ? '#ffffff' : '#6b7280' }
                         ]}>
-                            🌱 Device 3
+                            🌱 Sensor 3
                         </ButtonText>
                     </Button>
 
@@ -398,7 +398,7 @@ export default function Index() {
                             styles.deviceButtonText,
                             { color: isConnected ? '#ffffff' : '#6b7280' }
                         ]}>
-                            🍃 Device 4
+                            🍃 Sensor 4
                         </ButtonText>
                     </Button>
                 </View>
@@ -416,7 +416,7 @@ export default function Index() {
                             styles.deviceButtonText,
                             { color: isConnected ? '#ffffff' : '#6b7280' }
                         ]}>
-                            🌳 Device 5
+                            🌳 Sensor 5
                         </ButtonText>
                     </Button>
                 </View>
@@ -440,6 +440,7 @@ const styles = StyleSheet.create({
         margin: 3
     },
     header: {
+        marginTop: 20,
         marginBottom: 24,
         position: 'relative',
         alignItems: 'center',

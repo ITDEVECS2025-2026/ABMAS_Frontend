@@ -7,7 +7,10 @@ export default function SecondDeviceLayout() {
     style={{flex: 1, backgroundColor:'white'}}
     edges={['top', 'bottom']}
     >
-      <Stack screenOptions={{ headerShown: false }} />
+      <Stack screenOptions={{ headerShown: true,
+         title: 'Kembali'  
+         
+       }} />
     </SafeAreaView>
   )
 }
