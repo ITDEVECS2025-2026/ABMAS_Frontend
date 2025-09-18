@@ -48,7 +48,7 @@ export default function DeviceScreen() {
   // console.log('All Messages:', messages);
   const latestMessage = JSON.parse(messages[0]?.message || '{}') || {};
   const devid = latestMessage.DeviceId;
-  console.log(id, devid)
+  // console.log(id, devid)
 
   if (devid) {
     saveData(`device-${devid}`, latestMessage);

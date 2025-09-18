@@ -1,16 +1,7 @@
 import EventEmitter from "react-native/Libraries/vendor/emitter/EventEmitter";
 import mqtt, { MqttClient, IClientOptions } from "mqtt";
+import { MQTTService } from "@/interfaces/IMqtt";
 
-// Define interface untuk MQTTService
-interface MQTTService extends EventEmitter {
-  connect(brokerUrl: string, options?: IClientOptions): Promise<void>;
-  subscribe(topic: string): void;
-  unsubscribe(topic: string): void;
-  publish(topic: string, message: string): void;
-  disconnect(): void;
-  isConnected(): boolean;
-  getSubscribedTopics(): string[];
-}
 
 class MQTTServiceImpl extends EventEmitter implements MQTTService {
   private client: MqttClient | null = null;

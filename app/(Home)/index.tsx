@@ -16,7 +16,7 @@ import { mqqtMessageAtom, useMqqtMessageAtom } from "@/store/atom";
 import { VStack } from "@/components/ui/vstack";
 import { useAtom, useSetAtom } from "jotai";
 import parsedPayload from "@/utils/parsedPayload"
-import { is } from "zod/v4/locales";
+;
 const validationSchema = z.object({
     brokerUrl: z
         .string()
@@ -42,8 +42,8 @@ export default function Index() {
     const methods = useForm<MqttProps>({
         resolver: zodResolver(validationSchema),
         defaultValues: {
-            brokerUrl: "mqtt://broker.emqx.io:1883",
-            topic: "abmasecs/data",
+            brokerUrl: process.env.EXPO_PUBLIC_MQTT_BROKER_URL ,
+            topic: process.env.EXPO_PUBLIC_TOPIC  || "",
         },
         mode: "onTouched",
         reValidateMode: "onChange",
@@ -143,7 +143,6 @@ export default function Index() {
                     });
                 });
         } else {
-         
             setReceivedMessages([]);
             mqtt.disconnect();
             setIsConnected(false);
