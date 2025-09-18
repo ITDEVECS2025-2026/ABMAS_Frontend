@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "abmas-fe",
+    "name": "Soil Monitor",
     "slug": "abmas-fe",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -16,7 +16,8 @@
         "foregroundImage": "./styles/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.ecslaboratory.abmasecsapp"
     },
     "web": {
       "bundler": "metro",
@@ -34,7 +35,15 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-font"
+      "expo-font",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

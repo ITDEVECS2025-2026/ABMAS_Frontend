@@ -1,10 +1,15 @@
-
 export function useNormalizedURL(url: string): string {
-    if (url.startsWith("mqtt://")){
-        return "ws://" + url.replace("mqtt://", "").replace(":1883", ":8083") + "/mqtt";
-    }
-    if (url.startsWith("tcp://")){
-        return "ws://" + url.replace("tcp://", "").replace(":1883", ":8083") + "/mqtt";
-    }
-    return url;
+  let normalized = url.trim();
+
+  if (normalized.startsWith("mqtt://") || normalized.startsWith("tcp://")) {
+    normalized = normalized.replace("mqtt://", "").replace("tcp://", "");
+    return `ws://${normalized.replace(":1883", ":8083")}/mqtt`;
+  }
+
+  if (normalized.startsWith("mqtts://") || normalized.startsWith("ssl://")) {
+    normalized = normalized.replace("mqtts://", "").replace("ssl://", "");
+    return `wss://${normalized.replace(":8883", ":8084")}/mqtt`;
+  }
+
+  return normalized;
 }

@@ -22,7 +22,7 @@ const validationSchema = z.object({
         .string()
         .min(1, "URL broker tidak boleh kosong")
         .regex(
-            /^(mqtt:\/\/|tcp:\/\/|ws:\/\/|wss:\/\/)/,
+            /^(mqtt:\/\/|mqtts:\/\/|tcp:\/\/|ws:\/\/|wss:\/\/)/,
             "URL harus dimulai dengan mqtt://, tcp://, ws://, atau wss://"
         ),
     topic: z.string().min(1, "Topic tidak boleh kosong"),
