@@ -16,6 +16,7 @@ import { mqqtMessageAtom, useMqqtMessageAtom } from "@/store/atom";
 import { VStack } from "@/components/ui/vstack";
 import { useAtom, useSetAtom } from "jotai";
 import parsedPayload from "@/utils/parsedPayload"
+import { is } from "zod/v4/locales";
 const validationSchema = z.object({
     brokerUrl: z
         .string()
@@ -33,7 +34,10 @@ export default function Index() {
     const [connectionStatus, setConnectionStatus] = useState("Disconnected");
     const [receivedMessages, setReceivedMessages] = useAtom(mqqtMessageAtom);
     const [subscribedTopics, setSubscribedTopics] = useState<string[]>([]);
+    const [delay, setDelay] = useState<boolean>(false);
     const payloadSender = useSetAtom(mqqtMessageAtom);
+    const [clickedDelay, setClickedDelay] = useState<boolean>(false);
+    const deviceids = [1, 2, 3, 4, 5];
 
     const methods = useForm<MqttProps>({
         resolver: zodResolver(validationSchema),
@@ -104,28 +108,19 @@ export default function Index() {
         };
     }, []);
 
-    // const onMessage = (data: { message: string, topic: string }) => {
-    //     const parsedData = parsedPayload(data.message);
-
-    //     console.log("Received message on topic:", data.topic, data.message);
-    //    
-
-    //     const newMessage: ReceivedMessage = {
-    //         topic: data.topic,
-    //         message: data.message,
-    //         timestamp: new Date(),
-    //         parsedMessage: parsedData,
-    //     };
-
-    //     console.log("Updated messages in atom:", newMessage);
-    // }
+    const handleClickDelay = () => {
+        setClickedDelay(true);
+        // setConnectionStatus("Menghubungkan...");
+        setTimeout(() => setClickedDelay(false), 1000);
+        return;
+    }
 
     const handleConnect = (data: MqttProps) => {
         if (!isConnected) {
-            setConnectionStatus("menghubungkan...");
-
+            if (clickedDelay) return;
+            handleClickDelay();
+            // console.log("clicked")
             const brokerUrl = useNormalizedURL(data.brokerUrl);
-
             mqtt.connect(brokerUrl, {
                 clientId: "rn-client-" + Math.random().toString(16).substr(2, 8),
                 protocolId: "MQTT",
@@ -147,18 +142,20 @@ export default function Index() {
                         message: `Gagal terhubung: ${err.message}`,
                     });
                 });
-            } else {
-                setReceivedMessages([]);
-                mqtt.disconnect();
-                setIsConnected(false);
-                setConnectionStatus("Terputus");
-                console.log("Terputus dari broker MQTT");
+        } else {
+         
+            setReceivedMessages([]);
+            mqtt.disconnect();
+            setIsConnected(false);
+            setConnectionStatus("Terputus");
+            console.log("Terputus dari broker MQTT");
         }
     };
 
     const handlePublish = () => {
         const topic = methods.getValues("topic");
         const message = "Test message from React Native app";
+
         mqtt.publish(topic, message);
     };
 
@@ -263,15 +260,18 @@ export default function Index() {
                     </View>
 
                     <Button
-                        onPress={methods.handleSubmit(handleConnect)}
+                        onPress={
+                            methods.handleSubmit(handleConnect)
+                        }
                         style={[
                             styles.connectButton,
-                            { backgroundColor: isConnected ? '#ef4444' : '#10b981' }
+                            { backgroundColor: isConnected ?   '#ef4444' : '#10b981'}
                         ]}
-                        disabled={methods.formState.isSubmitting}
+                        disabled={ methods.formState.isSubmitting || clickedDelay}
                     >
+
                         <ButtonText style={styles.connectButtonText}>
-                            {methods.formState.isSubmitting ? "🔄 Menghubungkan..." : isConnected ? "🔌 terputus" : "⚡ terhubung"}
+                            {methods.formState.isSubmitting || clickedDelay  ? "🔄 Menghubungkan..." : isConnected ?  "🔌Putuskan" :   "⚡ Hubungkan"}
                         </ButtonText>
                     </Button>
                 </Form>
@@ -335,91 +335,32 @@ export default function Index() {
 
             {/* Device Navigation Grid */}
             <VStack style={styles.deviceGrid}>
-                <View style={styles.deviceRow}>
-                    <Button
-                        disabled={!isConnected}
-                        onPress={() => router.push("/(deviceOne)")}
-                        style={[
-                            styles.deviceButton,
-                            { backgroundColor: isConnected ? '#10b981' : '#d1d5db' }
-                        ]}
-                    >
-                        <ButtonText style={[
-                            styles.deviceButtonText,
-                            { color: isConnected ? '#ffffff' : '#6b7280' }
-                        ]}>
-                            🌾 Sensor 1
-                        </ButtonText>
-                    </Button>
 
-                    <Button
-                        disabled={!isConnected}
-                        onPress={() => router.push("/(deviceTwo)")}
-                        style={[
-                            styles.deviceButton,
-                            { backgroundColor: isConnected ? '#059669' : '#d1d5db' }
-                        ]}
-                    >
-                        <ButtonText style={[
-                            styles.deviceButtonText,
-                            { color: isConnected ? '#ffffff' : '#6b7280' }
-                        ]}>
-                            🌿 Sensor 2
-                        </ButtonText>
-                    </Button>
-                </View>
+                {deviceids.map((id) => (
+                    <View key={id} style={styles.deviceRow}>
+                        <Button
+                            disabled={!isConnected}
+                            onPress={() => router.push(`/(device)/${id}`)}
+                            style={[
+                                styles.deviceButton,
+                                { backgroundColor: isConnected ? '#19382eff' : '#d1d5db' }
+                            ]}
+                            id={`device-button-${id}`}
+                        >
+                            <ButtonText
+                                style={[
+                                    styles.deviceButtonText,
+                                    { color: isConnected ? '#ffffff' : '#6b7280' }
+                                ]}
+                            >
+                                🌾 Sensor {id}
+                            </ButtonText>
+                        </Button>
+                    </View>
+                ))}
 
-                <View style={styles.deviceRow}>
-                    <Button
-                        disabled={!isConnected}
-                        onPress={() => router.push("/(deviceThree)")}
-                        style={[
-                            styles.deviceButton,
-                            { backgroundColor: isConnected ? '#0d9488' : '#d1d5db' }
-                        ]}
-                    >
-                        <ButtonText style={[
-                            styles.deviceButtonText,
-                            { color: isConnected ? '#ffffff' : '#6b7280' }
-                        ]}>
-                            🌱 Sensor 3
-                        </ButtonText>
-                    </Button>
 
-                    <Button
-                        disabled={!isConnected}
-                        onPress={() => router.push("/(deviceFour)")}
-                        style={[
-                            styles.deviceButton,
-                            { backgroundColor: isConnected ? '#65a30d' : '#d1d5db' }
-                        ]}
-                    >
-                        <ButtonText style={[
-                            styles.deviceButtonText,
-                            { color: isConnected ? '#ffffff' : '#6b7280' }
-                        ]}>
-                            🍃 Sensor 4
-                        </ButtonText>
-                    </Button>
-                </View>
-
-                <View style={styles.deviceRowCenter}>
-                    <Button
-                        disabled={!isConnected}
-                        onPress={() => router.push("/(deviceFive)")}
-                        style={[
-                            styles.deviceButtonSingle,
-                            { backgroundColor: isConnected ? '#16a34a' : '#d1d5db' }
-                        ]}
-                    >
-                        <ButtonText style={[
-                            styles.deviceButtonText,
-                            { color: isConnected ? '#ffffff' : '#6b7280' }
-                        ]}>
-                            🌳 Sensor 5
-                        </ButtonText>
-                    </Button>
-                </View>
+            
             </VStack>
 
             {/* Background Elements */}
@@ -702,7 +643,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         borderRadius: 16,
         gap: 12,
-        marginTop: 16,
+        marginVertical:20,
     },
     deviceRow: {
         flexDirection: 'row',

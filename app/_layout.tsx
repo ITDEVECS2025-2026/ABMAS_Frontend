@@ -31,6 +31,7 @@ export default function RootLayout() {
     >
       <Stack.Screen name="(Home)/index" />
       <Stack.Screen name="+not-found" />
+      <Stack.Screen name="(device)" />
       <Stack.Screen name="(deviceOne)" />
       <Stack.Screen name="(deviceTwo)" />
       <Stack.Screen name="(deviceThree)" />
