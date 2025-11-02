@@ -62,13 +62,11 @@ export default function DeviceScreen() {
   loadData(`device-${id}`);
 
   // uncomment ae lek mau pakai timestamp dari arduino, tadi harus ngirim timestamp arduiino sender e
-  let terhubung = currentData.timestamp !== null && ((Date.now() - new Date(currentData.timestamp).getTime()) < 60000);
+  // let terhubung = currentData.timestamp !== null && ((Date.now() - new Date(currentData.timestamp).getTime()) < 60000);
   // let terhubung = currentData.N !== null;
 
+  let terhubung = devid === id;
 
-  // console.log('Latest Message:', latestMessage);
-
-  // console.log(typeof latestMessage.N)
   return (
     <SafeAreaView  style={styles.container} >
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
