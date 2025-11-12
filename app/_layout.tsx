@@ -4,6 +4,7 @@ import "../styles/global.css";
 import { useFonts, Montserrat_400Regular, Montserrat_500Medium, Montserrat_700Bold } from "@expo-google-fonts/montserrat";
 import { View } from "react-native";
 import { Spinner } from "@/components/ui/spinner";
+import { Provider } from 'jotai';
 
 
 export default function RootLayout() {
@@ -22,17 +23,18 @@ export default function RootLayout() {
   }
 
 
-  return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
- 
-      }}
-    >
-      <Stack.Screen name="(Home)/index" />
-      <Stack.Screen name="+not-found" />
-      <Stack.Screen name="(device)" />
+return (
+    <Provider>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="+not-found" />
+        <Stack.Screen name="(device)" />
 
-    </Stack>
+      </Stack>
+    </Provider>
   );
 }

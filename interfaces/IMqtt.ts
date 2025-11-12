@@ -1,5 +1,5 @@
 
-import EventEmitter from "react-native/Libraries/vendor/emitter/EventEmitter";
+import { EventEmitter } from 'eventemitter3';
 import { IClientOptions } from "mqtt";
 export type MqttProps = {
   brokerUrl: string;
@@ -22,4 +22,7 @@ export interface MQTTService extends EventEmitter {
   disconnect(): void;
   isConnected(): boolean;
   getSubscribedTopics(): string[];
+
+  // on(eventType: string, callback: (...args: any[]) => void): void;
+  // off(eventType: string, callback: (...args: any[]) => void): void;
 }

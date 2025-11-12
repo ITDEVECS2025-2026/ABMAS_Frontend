@@ -65,7 +65,8 @@ export default function DeviceScreen() {
   // let terhubung = currentData.timestamp !== null && ((Date.now() - new Date(currentData.timestamp).getTime()) < 60000);
   // let terhubung = currentData.N !== null;
 
-  let terhubung = devid === id;
+  let terhubung = devid == id;
+  console.log('Device ID:', devid, 'Expected ID:', id, 'Connected:', terhubung);
 
   return (
     <SafeAreaView  style={styles.container} >
@@ -82,20 +83,20 @@ export default function DeviceScreen() {
 
         <View style={styles.statusCard}>
           <View style={styles.statusRow}>
-            <Text style={styles.statusLabel}>Status</Text>
+            <Text style={styles.statusLabel}>Status Pesan</Text>
             <View style={styles.statusIndicatorRow}>
               <View style={[
                 styles.statusDot,
-                { backgroundColor: terhubung ? '#10b981' : '#ef4444' }
+                { backgroundColor: terhubung ? '#10b981' : '#ffd001ff' }
               ]} />
               <Text style={[
                 styles.statusText,
                 {
-                  backgroundColor: terhubung ? '#dcfce7' : '#fee2e2',
-                  color: terhubung ? '#166534' : '#991b1b'
+                  backgroundColor: terhubung ? '#dcfce7' : '#f0dd8cff',
+                  color: terhubung ? '#166534' : '#3b3835ff'
                 }
               ]}>
-                {terhubung ? 'Terhubung 😀' : 'Terputus ☠️'}
+                {terhubung ? 'Masuk' : 'Standby'}
               </Text>
             </View>
           </View>

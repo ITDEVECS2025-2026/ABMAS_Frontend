@@ -1,9 +1,10 @@
-import EventEmitter from "react-native/Libraries/vendor/emitter/EventEmitter";
+import { EventEmitter } from "eventemitter3";
 import mqtt, { MqttClient, IClientOptions } from "mqtt";
 import { MQTTService } from "@/interfaces/IMqtt";
 
 
-class MQTTServiceImpl extends EventEmitter implements MQTTService {
+
+class MQTTServiceImpl extends EventEmitter {
   private client: MqttClient | null = null;
   private subscribedTopics: Set<string> = new Set();
   private isConnecting: boolean = false;
@@ -183,5 +184,4 @@ class MQTTServiceImpl extends EventEmitter implements MQTTService {
 }
 
 
-const mqttService: MQTTService = new MQTTServiceImpl();
-export default mqttService;
+export default new MQTTServiceImpl() as unknown as MQTTService;
