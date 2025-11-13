@@ -11,13 +11,10 @@ import {
 } from '@/store/birdDetectionStore'; 
 import { useNormalizedURL } from '@/utils/useURLConvertion';
 
-// --- 🛑 KONFIGURASI PENTING (DAPATKAN DARI TEMAN ANDA) 🛑 ---
-// Ganti dengan URL broker WebSocket dari teman Anda
-const BROKER_URL = 'mqtt://broker.emqx.io:1883'; 
+const BROKER_URL = process.env.EXPO_PUBLIC_MQTT_BROKER_URL || ''; 
 const TOPIC_PREFIX = useNormalizedURL(BROKER_URL)
-// Ganti dengan Topic yang benar
-const BIRD_TOPIC = 'abmasecs/burung'; 
-// -----------------------------------------------------------
+const BIRD_TOPIC = process.env.EXPO_PUBLIC_BIRD_TOPIC || ''; 
+
 
 
 export const useBirdDetection = () => {
@@ -39,10 +36,8 @@ export const useBirdDetection = () => {
     const onMessage = (data: { topic: string; message: string }) => {
       if (data.topic === BIRD_TOPIC) {
         try {
-          // 🛑 Ganti 'total' & 'confidence' agar sesuai dengan JSON Anda
           const payload = JSON.parse(data.message);
-          
-          // Contoh: jika JSON-nya {"total": 5, "confidence": 0.85}
+
           setTotalBurung(payload.DeviceID);
           setTotalBurung(payload.TotalBirds); 
           setConfidence(payload.AvrConfidence);

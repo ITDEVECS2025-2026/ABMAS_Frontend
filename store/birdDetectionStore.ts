@@ -1,4 +1,4 @@
-// Lokasi: store/birdDetectionStore.ts
+
 import { atom } from 'jotai';
 
 export const birdDetectionConnectedAtom = atom(false);

@@ -30,10 +30,10 @@ return (
           headerShown: false,
         }}
       >
-        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="index" />
         <Stack.Screen name="+not-found" />
-        <Stack.Screen name="(device)" />
-
+        <Stack.Screen name="(burung)" />
+        <Stack.Screen name="(soil)" />
       </Stack>
     </Provider>
   );
