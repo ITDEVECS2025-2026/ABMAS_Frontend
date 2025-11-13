@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "Soil Monitor",
-    "slug": "abmas-fe",
+    "name": "Teman Tanah",
+    "slug": "ecs laboratory",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./styles/assets/images/icon.png",
+    "icon": "./styles/assets/images/logo.png",
     "scheme": "abmasfe",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
